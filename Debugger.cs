@@ -95,20 +95,12 @@ namespace Tukxel
             nsPerTick = 1000000000 / Stopwatch.Frequency;
             fps = 1000000000;
             DebugWriteLine("Thread Initialized");
-            DebugWriteLine("nsPerTick = " + nsPerTick);
         }
 
         public static void GetFPS()
         {
-            #region old
-            //if (ms != 0) fps = 1000 / ms;
-            //ms = 0;
-            #endregion
-
-            #region new
             if (ns != 0) fps = 1000000000 / ns;
             ns = 0;
-            #endregion
         }
     }
 }

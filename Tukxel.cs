@@ -11,9 +11,6 @@ namespace Tukxel
         {
             Console.Title = "Tukxel Console";
 
-            Console.WriteLine("Hello, world!");
-            //Console.ReadKey();
-
             using (Game game = new Game(800, 600, "Tukxel"))
             {
                 game.Run(60.0);
