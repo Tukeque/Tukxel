@@ -77,6 +77,7 @@ namespace Tukxel
         public static void Update()
         {
             DebugWriteLine("FPS = " + fps);
+            fps = 0;
         }
 
         public static void Setup()
