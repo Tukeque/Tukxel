@@ -25,7 +25,7 @@ namespace Tukxel
             base.OnUpdateFrame(e);
             stopwatch.Stop();
 
-            FPSTracker.ns += stopwatch.ElapsedTicks * FPSTracker.nsPerTick;
+            FPSTracker.ns += stopwatch.ElapsedTicks;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -42,7 +42,7 @@ namespace Tukxel
 
             stopwatch.Stop();
 
-            FPSTracker.ns += stopwatch.ElapsedTicks * FPSTracker.nsPerTick;
+            FPSTracker.ns += stopwatch.ElapsedTicks;
             FPSTracker.GetFPS();
         }
 
