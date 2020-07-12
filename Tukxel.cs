@@ -9,6 +9,8 @@ namespace Tukxel
 
         public static void Main(string[] args)
         {
+            Console.Title = "Tukxel Console";
+
             Console.WriteLine("Hello, world!");
             //Console.ReadKey();
 

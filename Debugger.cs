@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace Tukxel
@@ -38,8 +35,15 @@ namespace Tukxel
             ThreadName = "[Main Thread]";
             DebugWriteLine("Thread initialized");
 
-            Thread fpsTracker = new Thread(new ThreadStart(FPSTracker.main));
+            Thread fpsTracker = new Thread(new ThreadStart(FPSTracker.TheSetup));
             fpsTracker.Start();
+        }
+
+
+
+        public static void Error(string error, string location)
+        {
+            DebugWriteLine("haha error occured rib, error is: " + error + "\n and it come from: " + "location");
         }
     }
 
@@ -59,8 +63,10 @@ namespace Tukxel
             Console.WriteLine(StartMessage() + text);
         }
 
-        public static void main()
+        public static void TheSetup()
         {
+            Setup();
+
             while (!Debugger.End)
             {
                 Thread.Sleep(1000);

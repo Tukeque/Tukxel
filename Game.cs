@@ -9,6 +9,8 @@ namespace Tukxel
 {
     class Game : GameWindow
     {
+        public static Shader shader;
+
         public Game(int width, int height, string title) : base(width, height, new GraphicsMode(new ColorFormat(8, 8, 8, 0), 24, 8, 4), title) { }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -61,11 +63,15 @@ namespace Tukxel
         {
             Debugger.End = true;
 
+            Renderer.Unload();
+
             base.OnUnload(e);
         }
 
         protected override void OnResize(EventArgs e)
         {
+            GL.Viewport(0, 0, Width, Height);
+
             base.OnResize(e);
         }
     }
