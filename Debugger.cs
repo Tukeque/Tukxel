@@ -76,10 +76,16 @@ namespace Tukxel
 
         public static void Update()
         {
-            if (ms != 0) fps = 1000 / ms;
-            else fps = 500;
-
-            DebugWriteLine("FPS = " + fps);
+            if (ms != 0)
+            {
+                fps = 1000 / ms;
+                DebugWriteLine("FPS = " + fps);
+            }
+            else
+            {
+                fps = 1000;
+                DebugWriteLine("FPS = +1000");
+            }
         }
 
         public static void Setup()
@@ -87,8 +93,8 @@ namespace Tukxel
             ThreadName = "[FPS Tracker]";
 
             ms = 0;
-            fps = 500;
-            DebugWriteLine("Thread Initialized.");
+            fps = 1000;
+            DebugWriteLine("Thread Initialized");
         }
 
         public static void GetFPS()

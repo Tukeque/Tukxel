@@ -10,7 +10,7 @@ namespace Tukxel
     {
         int Handle;
 
-        void Use()
+        public void Use()
         {
             GL.UseProgram(Handle);
         }
@@ -90,6 +90,8 @@ namespace Tukxel
 
     class Renderer
     {
+        public static Shader shader;
+
         public static float[] vertices = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
@@ -97,20 +99,50 @@ namespace Tukxel
         };
 
         public static int VertexBufferObject;
+        public static int VertexArrayObject;
 
         public static void Update()
         {
+            #region oldDraw???
+            //// vertex buffer object (VBO)
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
+            //// Vertex Attribute Pointer (VAP)(???)
+            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            //GL.EnableVertexAttribArray(0);
+
+            //// shader
+            //shader.Use();
+
+            //// actually drawing
+            //// DrawTriangle();
+            #endregion
+
+            shader.Use();
+            GL.BindVertexArray(VertexArrayObject);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] = vertices[i] + 0.1f;
+            }
         }
 
         public static void Setup()
         {
+            VertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(VertexArrayObject);
+
             VertexBufferObject = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
 
-            Game.shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
+
+            shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
         }
 
         public static void Unload()
@@ -118,7 +150,7 @@ namespace Tukxel
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.DeleteBuffer(VertexBufferObject);
 
-            Game.shader.Dispose();
+            shader.Dispose();
         }
 
     }
