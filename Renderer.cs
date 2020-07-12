@@ -103,29 +103,14 @@ namespace Tukxel
 
         public static void Update()
         {
-            #region oldDraw???
-            //// vertex buffer object (VBO)
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-
-            //// Vertex Attribute Pointer (VAP)(???)
-            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            //GL.EnableVertexAttribArray(0);
-
-            //// shader
-            //shader.Use();
-
-            //// actually drawing
-            //// DrawTriangle();
-            #endregion
-
             shader.Use();
             GL.BindVertexArray(VertexArrayObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.DynamicDraw);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i] = vertices[i] + 0.1f;
+                vertices[i] = vertices[i] + 0.001f;
             }
         }
 
