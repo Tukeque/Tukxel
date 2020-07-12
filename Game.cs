@@ -13,8 +13,8 @@ namespace Tukxel
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //Stopwatch stopwatch = new Stopwatch(); This is shitty. Don't keep on creating a stopwatch, wastes time
+            //stopwatch.Start();
             KeyboardState keyboard = Keyboard.GetState();
 
             Tukxel.keyboard = keyboard;
@@ -23,15 +23,13 @@ namespace Tukxel
             Tukxel.Update();
 
             base.OnUpdateFrame(e);
-            stopwatch.Stop();
-
-            FPSTracker.ms += stopwatch.ElapsedMilliseconds;
+            //stopwatch.Stop();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //Stopwatch stopwatch = new Stopwatch(); This is shitty. Don't keep on creating a stopwatch, wastes time
+            //stopwatch.Start();
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
@@ -40,10 +38,9 @@ namespace Tukxel
             Context.SwapBuffers();
             base.OnRenderFrame(e);
 
-            stopwatch.Stop();
+            //stopwatch.Stop();
 
-            FPSTracker.ms += stopwatch.ElapsedMilliseconds;
-            FPSTracker.GetFPS();
+            FPSTracker.UpdateFPS();
         }
 
         protected override void OnLoad(EventArgs e)
