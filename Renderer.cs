@@ -6,5 +6,15 @@ namespace Tukxel
 {
     class Renderer
     {
+        public static void Update()
+        {
+
+        }
+
+        public static void Setup()
+        {
+
+        }
+
     }
 }
