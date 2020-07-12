@@ -44,7 +44,7 @@ namespace Tukxel
 
         public static void Error(string error, string location)
         {
-            DebugWriteLine("haha error occured rib, error is: " + error + "\n and it come from: " + "location");
+            DebugWriteLine("haha error occured rib, error is: " + error + "\n and it come from: " + location);
         }
     }
 
