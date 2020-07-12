@@ -89,19 +89,7 @@ namespace Tukxel
 
         public static void UpdateFPS()
         {
-            #region old
-            //if (ms != 0) fps = 1000 / ms;
-            //ms = 0;
-            #endregion
-
-            #region new
-            //if (ns != 0) fps = 1000000000 / ns;
-            //ns = 0;
-            #endregion
-
-            #region newer
             fps++;
-            #endregion
         }
     }
 }
