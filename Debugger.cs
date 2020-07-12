@@ -50,11 +50,7 @@ namespace Tukxel
 
     class FPSTracker
     {
-        public static long nsPerTick;
-        public static long ns;
-
-        public static long ms;
-        public static float fps;
+        public static long fps;
         public static string ThreadName;
 
         public static string StartMessage()
@@ -80,25 +76,18 @@ namespace Tukxel
 
         public static void Update()
         {
-            if (fps == 1000000000)
-                DebugWriteLine("FPS = +1000000000");
-            else
-                DebugWriteLine("FPS = " + fps);
+            DebugWriteLine("FPS = " + fps);
         }
 
         public static void Setup()
         {
             ThreadName = "[FPS Tracker]";
 
-            ms = 0;
-            ns = 0;
-            nsPerTick = 1000000000 / Stopwatch.Frequency;
-            fps = 1000000000;
+            fps = 0;
             DebugWriteLine("Thread Initialized");
-            DebugWriteLine("nsPerTick = " + nsPerTick);
         }
 
-        public static void GetFPS()
+        public static void UpdateFPS()
         {
             #region old
             //if (ms != 0) fps = 1000 / ms;
@@ -106,8 +95,12 @@ namespace Tukxel
             #endregion
 
             #region new
-            if (ns != 0) fps = 1000000000 / ns;
-            ns = 0;
+            //if (ns != 0) fps = 1000000000 / ns;
+            //ns = 0;
+            #endregion
+
+            #region newer
+            fps++;
             #endregion
         }
     }
