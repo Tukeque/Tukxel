@@ -14,9 +14,6 @@ namespace Tukxel
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            // FPSTracker stuff
-            FPSTracker.stopwatch.Restart();
-
             KeyboardState keyboard = Keyboard.GetState();
 
             Tukxel.keyboard = keyboard;
@@ -25,17 +22,10 @@ namespace Tukxel
             Tukxel.Update();
 
             base.OnUpdateFrame(e);
-
-            // FPSTracker stuff
-            FPSTracker.stopwatch.Stop();
-            FPSTracker.ticks += FPSTracker.stopwatch.ElapsedTicks;
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            // FPSTracker stuff
-            FPSTracker.stopwatch.Restart();
-
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             Renderer.Update();
@@ -43,9 +33,7 @@ namespace Tukxel
             Context.SwapBuffers();
             base.OnRenderFrame(e);
 
-            // FPSTracker stuff
-            FPSTracker.stopwatch.Stop();
-            FPSTracker.ticks += FPSTracker.stopwatch.ElapsedTicks;
+            // FPS Tracking
             FPSTracker.UpdateFPS();
         }
 
