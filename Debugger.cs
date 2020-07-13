@@ -102,7 +102,8 @@ namespace Tukxel
         public static void UpdateFPS()
         {
             fps++;
-            efps = 1000000000 / ticks;
+            long efpsd = ticks * (1000000000 / Stopwatch.Frequency);
+            efps = 1000000000 / efpsd;
             ticks = 0;
         }
     }
