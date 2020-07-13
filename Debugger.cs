@@ -82,7 +82,7 @@ namespace Tukxel
 
         public static void Update()
         {
-            es = 1.0f / fps;
+            es = 1.0d / fps;
             Game.DeltaTime = es;
             DebugWriteLine(string.Format("FPS = {0}; EFPS = {1}; ES = {2}", fps, efps, es));
             // DeltaTime should be elapssed seconds
