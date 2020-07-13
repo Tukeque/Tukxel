@@ -3,104 +3,21 @@ using OpenTK.Graphics;
 using System;
 using System.Text;
 using System.IO;
+using OpenTK;
 
 namespace Tukxel
 {
-    class Shader : IDisposable
-    {
-        int Handle;
-
-        public void Use()
-        {
-            GL.UseProgram(Handle);
-        }
-
-        public Shader(string vertexPath, string fragmentPath)
-        {
-            int VertexShader;
-            int FragmentShader;
-
-            // Getting source into shaders
-
-            string VertexShaderSource;
-
-            StreamReader reader = new StreamReader(vertexPath, Encoding.UTF8);
-
-            VertexShaderSource = reader.ReadToEnd();
-
-            string FragmentShaderSource;
-
-            reader = new StreamReader(fragmentPath, Encoding.UTF8);
-            FragmentShaderSource = reader.ReadToEnd();
-
-            VertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(VertexShader, VertexShaderSource);
-
-            FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(FragmentShader, FragmentShaderSource);
-
-            // Compiling shaders
-
-            GL.CompileShader(VertexShader);
-
-            string infoLogVert = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogVert != String.Empty) Debugger.Error(infoLogVert, "compiling vertex shader(in shader class)");
-
-            GL.CompileShader(FragmentShader);
-
-            string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-            if (infoLogFrag != String.Empty) Debugger.Error(infoLogFrag, "compiling fragment shader(in shader class)");
-
-            Handle = GL.CreateProgram();
-
-            GL.AttachShader(Handle, VertexShader);
-            GL.AttachShader(Handle, FragmentShader);
-
-            GL.LinkProgram(Handle);
-
-            // Cleaning up
-
-            GL.DetachShader(Handle, VertexShader);
-            GL.DetachShader(Handle, FragmentShader);
-            GL.DeleteShader(FragmentShader);
-            GL.DeleteShader(VertexShader);
-        }
-
-        // Deleting when application closed
-
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                GL.DeleteProgram(Handle);
-
-                disposedValue = true;
-            }
-        }
-
-        ~Shader()
-        {
-            GL.DeleteProgram(Handle);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-    }
-
     public struct Mesh
     {
         public float[] verts;
         public uint[]  indices;
+        public float[] texCoords;
     }
 
     class Renderer
     {
         public static Shader shader;
+        public static Texture texture;
 
         public static float[] vertices = {
             -0.5f, -0.5f, 0.0f,
@@ -108,7 +25,8 @@ namespace Tukxel
              0.0f,  0.5f, 0.0f
         };
 
-        public static Mesh mesh;
+        public static Mesh rectangol;
+        public static Mesh triangol;
 
         public static int ElementBufferObject;
         public static int VertexBufferObject;
@@ -118,59 +36,100 @@ namespace Tukxel
         {
             shader.Use();
             GL.BindVertexArray(VertexArrayObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, mesh.verts.Length * sizeof(float), mesh.verts, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
             //GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             //^ old draw arrays
 
-            GL.DrawElements(PrimitiveType.Triangles, mesh.indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
 
             //for (int i = 0; i < vertices.Length; i++)
             //{
             //    vertices[i] = vertices[i] + (0.05f * (float)Game.DeltaTime);
             //}
 
-            for (int i = 0; i < mesh.verts.Length; i++)
+            for (int i = 0; i < rectangol.verts.Length; i++)
             {
-                mesh.verts[i] = mesh.verts[i] + (0.05f * (float)Game.DeltaTime);
+                rectangol.verts[i] = rectangol.verts[i] + (0.00f * (float)Game.DeltaTime);
             }
         }
 
         public static void Setup()
         {
-            mesh.verts = new float[]{
-                 0.5f,  0.5f,  0.0f, // top right
-                 0.5f, -0.5f,  0.0f, // bottom right
-                -0.5f, -0.5f,  0.0f, // bottom left
-                -0.5f,  0.5f,  0.0f  // top left
+            #region rectangol
+            rectangol.verts = new float[]
+            {
+                // [Position      ] [Texture coords]
+                 0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
+                 0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // bottom right
+                -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // bottom left
+                -0.5f,  0.5f,  0.0f, 0.0f, 1.0f  // top left
             };
-            mesh.indices = new uint[]{
+            rectangol.indices = new uint[]
+            {
                 0, 1, 3, // first triangle
                 1, 2, 3  // second triangle
             };
+            #endregion
+
+
+
+            #region triangol
+            triangol.verts = new float[]
+            {
+                 0.5f, -0.5f,  0.0f, // bottom left
+                -0.5f, -0.5f,  0.0f, // bottom right
+                 0.0f,  0.5f,  0.0f  // middle top
+            };
+            triangol.indices = new uint[]
+            {
+                0, 1, 2, // triangol
+            };
+            triangol.texCoords = new float[]
+            {
+                0.0f, 0.0f, // bottom left corner
+                1.0f, 0.0f, // bottom right corner
+                0.5f, 1.0f  // top center corner
+            };
+            #endregion
 
             #region OpenGL stuff
+            // Vertex Array Object
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
-
-
 
             // Vertex Buffer Object
             VertexBufferObject = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, mesh.verts.Length * sizeof(float), mesh.verts, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.StaticDraw);
+
+            //Shader
+            shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            shader.Use();
+            texture = new Texture("Images/pog.png");
+            texture.Use();
+
 
             // Element Buffer Object
             ElementBufferObject = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, mesh.indices.Length * sizeof(uint), mesh.indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, rectangol.indices.Length * sizeof(uint), rectangol.indices, BufferUsageHint.StaticDraw);
 
             // Vertex Attribute Pointer
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            //^ before textures
+            //v wen textures
+            int vertexLocation = shader.GetAttribLocation("aPosition");
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            // TExtures stuff??
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+
+
             #endregion
         }
 
@@ -179,7 +138,13 @@ namespace Tukxel
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.DeleteBuffer(VertexBufferObject);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+            GL.UseProgram(0);
+
             GL.DeleteBuffer(ElementBufferObject);
+            GL.DeleteBuffer(VertexArrayObject);
+
+            GL.DeleteProgram(shader.Handle);
+            GL.DeleteProgram(texture.Handle);
 
             shader.Dispose();
         }

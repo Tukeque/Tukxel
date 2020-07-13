@@ -8,9 +8,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.7.0" />
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.5.22" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0003" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Images\pog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Shaders\shader.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
