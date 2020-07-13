@@ -13,8 +13,7 @@ namespace Tukxel
 
             using Game game = new Game(800, 600, "Tukxel");
             {
-                game.VSync = OpenTK.VSyncMode.On;
-                game.Run(0);
+                game.Run(60, 60);
             }
         }
 
