@@ -56,7 +56,7 @@ namespace Tukxel
         public static double es;
 
         public static long fps;
-        public static long tps;
+        public static long efps;
         public static string ThreadName;
 
         public static string StartMessage()
@@ -84,9 +84,7 @@ namespace Tukxel
         {
             es = 1.0f / fps;
             Game.DeltaTime = es;
-            //DebugWriteLine("FPS = " + fps + "; TPS = " + tps + "; ES = " + es);
-            // ^is bad according to mr gls
-            DebugWriteLine(string.Format("FPS = {0}; TPS = {1}; ES = {2}", fps, tps, es));
+            DebugWriteLine(string.Format("FPS = {0}; EFPS = {1}; ES = {2}", fps, efps, es));
             // DeltaTime should be elapssed seconds
             fps = 0;
         }
@@ -104,7 +102,7 @@ namespace Tukxel
         public static void UpdateFPS()
         {
             fps++;
-            tps = 1000000000 / ticks;
+            efps = 1000000000 / ticks;
             ticks = 0;
         }
     }

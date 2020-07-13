@@ -3,7 +3,6 @@ using System;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using System.Diagnostics;
 
 namespace Tukxel
 {
@@ -72,7 +71,13 @@ namespace Tukxel
 
         protected override void OnResize(EventArgs e)
         {
+            Width  = Width  == 0 ? 1 : Width;
+            Height = Height == 0 ? 1 : Height;
+
             GL.Viewport(0, 0, Width, Height);
+
+            #region perspective?
+            #endregion
 
             base.OnResize(e);
         }

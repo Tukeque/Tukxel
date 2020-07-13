@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using OpenTK.Input;
+﻿using OpenTK.Input;
 using System;
 
 namespace Tukxel
@@ -8,11 +7,15 @@ namespace Tukxel
     {
         public static KeyboardState keyboard;
 
-        public static void Main(string[] args)
+        public static void Main ()
         {
             Console.Title = "Tukxel Console";
 
-            using Game game = new Game(800, 600, "Tukxel"); game.Run(60);
+            using Game game = new Game(800, 600, "Tukxel");
+            {
+                game.VSync = OpenTK.VSyncMode.On;
+                game.Run(0);
+            }
         }
 
         public static void Update()
