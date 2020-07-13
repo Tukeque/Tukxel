@@ -84,7 +84,9 @@ namespace Tukxel
         {
             es = 1.0f / fps;
             Game.DeltaTime = es;
-            DebugWriteLine("FPS = " + fps + "; TPS = " + tps + "; ES = " + es);
+            //DebugWriteLine("FPS = " + fps + "; TPS = " + tps + "; ES = " + es);
+            // ^is bad according to mr gls
+            DebugWriteLine(string.Format("FPS = {0}; TPS = {1}; ES = {2}", fps, tps, es));
             // DeltaTime should be elapssed seconds
             fps = 0;
         }

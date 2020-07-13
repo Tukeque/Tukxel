@@ -92,6 +92,12 @@ namespace Tukxel
         }
     }
 
+    public struct Mesh
+    {
+        public float[] verts;
+        public uint[]  indices;
+    }
+
     class Renderer
     {
         public static Shader shader;
@@ -102,6 +108,9 @@ namespace Tukxel
              0.0f,  0.5f, 0.0f
         };
 
+        public static Mesh mesh;
+
+        public static int ElementBufferObject;
         public static int VertexBufferObject;
         public static int VertexArrayObject;
 
@@ -109,29 +118,60 @@ namespace Tukxel
         {
             shader.Use();
             GL.BindVertexArray(VertexArrayObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.DynamicDraw);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            GL.BufferData(BufferTarget.ArrayBuffer, mesh.verts.Length * sizeof(float), mesh.verts, BufferUsageHint.DynamicDraw);
+            //GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            //^ old draw arrays
 
-            for (int i = 0; i < vertices.Length; i++)
+            GL.DrawElements(PrimitiveType.Triangles, mesh.indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            //for (int i = 0; i < vertices.Length; i++)
+            //{
+            //    vertices[i] = vertices[i] + (0.05f * (float)Game.DeltaTime);
+            //}
+
+            for (int i = 0; i < mesh.verts.Length; i++)
             {
-                vertices[i] = vertices[i] + (0.05f * (float)Game.DeltaTime);
+                mesh.verts[i] = mesh.verts[i] + (0.05f * (float)Game.DeltaTime);
             }
         }
 
         public static void Setup()
         {
+            mesh.verts = new float[]{
+                 0.5f,  0.5f,  0.0f, // top right
+                 0.5f, -0.5f,  0.0f, // bottom right
+                -0.5f, -0.5f,  0.0f, // bottom left
+                -0.5f,  0.5f,  0.0f  // top left
+            };
+            mesh.indices = new uint[]{
+                0, 1, 3, // first triangle
+                1, 2, 3  // second triangle
+            };
+
+            #region OpenGL stuff
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
+
+
+            // Vertex Buffer Object
             VertexBufferObject = GL.GenBuffer();
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, mesh.verts.Length * sizeof(float), mesh.verts, BufferUsageHint.StaticDraw);
 
+            // Element Buffer Object
+            ElementBufferObject = GL.GenBuffer();
+
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, mesh.indices.Length * sizeof(uint), mesh.indices, BufferUsageHint.StaticDraw);
+
+            // Vertex Attribute Pointer
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
             shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            #endregion
         }
 
         public static void Unload()
