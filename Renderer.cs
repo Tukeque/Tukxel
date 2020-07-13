@@ -114,7 +114,7 @@ namespace Tukxel
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i] = vertices[i] + 0.001f;
+                vertices[i] = vertices[i] + (0.05f * (float)Game.DeltaTime);
             }
         }
 

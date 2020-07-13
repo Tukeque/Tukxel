@@ -53,6 +53,8 @@ namespace Tukxel
         public static Stopwatch stopwatch;
         public static long ticks;
 
+        public static double es;
+
         public static long fps;
         public static long tps;
         public static string ThreadName;
@@ -80,7 +82,10 @@ namespace Tukxel
 
         public static void Update()
         {
-            DebugWriteLine("FPS = " + fps + "; TPS = " + tps);
+            es = 1.0f / fps;
+            Game.DeltaTime = es;
+            DebugWriteLine("FPS = " + fps + "; TPS = " + tps + "; ES = " + es);
+            // DeltaTime should be elapssed seconds
             fps = 0;
         }
 

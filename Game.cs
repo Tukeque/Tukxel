@@ -9,6 +9,8 @@ namespace Tukxel
 {
     class Game : GameWindow
     {
+        public static double DeltaTime;
+
         public Game(int width, int height, string title) : base(width, height, new GraphicsMode(new ColorFormat(8, 8, 8, 0), 24, 8, 4), title) { }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
