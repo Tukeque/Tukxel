@@ -50,7 +50,11 @@ namespace Tukxel
 
     class FPSTracker
     {
+        public static Stopwatch stopwatch;
+        public static long ticks;
+
         public static long fps;
+        public static long tps;
         public static string ThreadName;
 
         public static string StartMessage()
@@ -76,13 +80,15 @@ namespace Tukxel
 
         public static void Update()
         {
-            DebugWriteLine("FPS = " + fps);
+            DebugWriteLine("FPS = " + fps + "; TPS = " + tps);
             fps = 0;
         }
 
         public static void Setup()
         {
             ThreadName = "[FPS Tracker]";
+
+            stopwatch = new Stopwatch();
 
             fps = 0;
             DebugWriteLine("Thread Initialized");
@@ -91,6 +97,8 @@ namespace Tukxel
         public static void UpdateFPS()
         {
             fps++;
+            tps = 1000000000 / ticks;
+            ticks = 0;
         }
     }
 }

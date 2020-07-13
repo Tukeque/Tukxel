@@ -1,4 +1,5 @@
-﻿using OpenTK.Input;
+﻿using OpenTK;
+using OpenTK.Input;
 using System;
 
 namespace Tukxel
@@ -11,10 +12,7 @@ namespace Tukxel
         {
             Console.Title = "Tukxel Console";
 
-            using (Game game = new Game(800, 600, "Tukxel"))
-            {
-                game.Run(60.0);
-            }
+            using Game game = new Game(800, 600, "Tukxel"); game.Run(60);
         }
 
         public static void Update()

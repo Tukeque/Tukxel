@@ -20,6 +20,8 @@ namespace Tukxel
             int VertexShader;
             int FragmentShader;
 
+            // Getting source into shaders
+
             string VertexShaderSource;
 
             StreamReader reader = new StreamReader(vertexPath, Encoding.UTF8);
@@ -37,17 +39,17 @@ namespace Tukxel
             FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(FragmentShader, FragmentShaderSource);
 
+            // Compiling shaders
+
             GL.CompileShader(VertexShader);
 
             string infoLogVert = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogVert != String.Empty)
-                Debugger.Error(infoLogVert, "compiling vertex shader");
+            if (infoLogVert != String.Empty) Debugger.Error(infoLogVert, "compiling vertex shader(in shader class)");
 
             GL.CompileShader(FragmentShader);
 
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-            if (infoLogFrag != String.Empty)
-                Debugger.Error(infoLogFrag, "compiling fragment shader");
+            if (infoLogFrag != String.Empty) Debugger.Error(infoLogFrag, "compiling fragment shader(in shader class)");
 
             Handle = GL.CreateProgram();
 
@@ -56,13 +58,15 @@ namespace Tukxel
 
             GL.LinkProgram(Handle);
 
-            // cleaning up
+            // Cleaning up
 
             GL.DetachShader(Handle, VertexShader);
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
         }
+
+        // Deleting when application closed
 
         private bool disposedValue = false;
 
