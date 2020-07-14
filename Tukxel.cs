@@ -13,6 +13,8 @@ namespace Tukxel
 
             using Game game = new Game(800, 600, "Tukxel");
             {
+                //game.Icon = 
+                // ^ gotta figure out how to get OpenTK.icon from .ico file or smth ok bye
                 game.Run(60, 60);
             }
         }

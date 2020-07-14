@@ -1,9 +1,4 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using OpenTK.Graphics;
-using System;
-using System.Text;
-using System.IO;
-using OpenTK;
 
 namespace Tukxel
 {
@@ -19,12 +14,6 @@ namespace Tukxel
         public static Shader shader;
         public static Texture texture;
 
-        public static float[] vertices = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
-        };
-
         public static Mesh rectangol;
         public static Mesh triangol;
 
@@ -37,19 +26,28 @@ namespace Tukxel
             shader.Use();
             GL.BindVertexArray(VertexArrayObject);
             GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
-            //GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
-            //^ old draw arrays
 
             GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
 
-            //for (int i = 0; i < vertices.Length; i++)
-            //{
-            //    vertices[i] = vertices[i] + (0.05f * (float)Game.DeltaTime);
-            //}
-
+            float change = 0.05f;
+            int s = 0;
             for (int i = 0; i < rectangol.verts.Length; i++)
             {
-                rectangol.verts[i] = rectangol.verts[i] + (0.00f * (float)Game.DeltaTime);
+                switch (s)
+                {
+                    case 0:
+                        rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                        break;
+
+                    case 1:
+                        rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                        break;
+
+                    case 2:
+                        rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                        break;
+                }
+                s = (s + 1) % 5;
             }
         }
 
@@ -59,10 +57,10 @@ namespace Tukxel
             rectangol.verts = new float[]
             {
                 // [Position      ] [Texture coords]
-                 0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
-                 0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // bottom right
-                -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // bottom left
-                -0.5f,  0.5f,  0.0f, 0.0f, 1.0f  // top left
+                 1.0f,  1.0f,  0.0f, 2.0f, 2.0f, // top right
+                 1.0f, -1.0f,  0.0f, 2.0f, 0.0f, // bottom right
+                -1.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom left
+                -1.0f,  1.0f,  0.0f, 0.0f, 2.0f  // top left
             };
             rectangol.indices = new uint[]
             {
@@ -71,7 +69,33 @@ namespace Tukxel
             };
             #endregion
 
+            int s = 0;
+            for (int i = 0; i < rectangol.verts.Length; i++)
+            {
+                switch (s)
+                {
+                    case 0:
+                        rectangol.verts[i] = rectangol.verts[i] / 2.0f;
+                        break;
 
+                    case 1:
+                        rectangol.verts[i] = rectangol.verts[i] / 2.0f;
+                        break;
+
+                    case 2:
+                        rectangol.verts[i] = rectangol.verts[i] / 2.0f;
+                        break;
+
+                    case 3:
+                        rectangol.verts[i] = rectangol.verts[i] / 2.0f;
+                        break;
+
+                    case 4:
+                        rectangol.verts[i] = rectangol.verts[i] / 2.0f;
+                        break;
+                }
+                s = (s + 1) % 5;
+            }
 
             #region triangol
             triangol.verts = new float[]
@@ -106,7 +130,7 @@ namespace Tukxel
             //Shader
             shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
             shader.Use();
-            texture = new Texture("Images/pog.png");
+            texture = new Texture("Images/summer.jpg");
             texture.Use();
 
 

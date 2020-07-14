@@ -39,6 +39,8 @@ namespace Tukxel
 
         protected override void OnLoad(EventArgs e)
         {
+            
+
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
             Debugger.Setup();
