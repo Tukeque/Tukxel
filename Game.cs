@@ -14,62 +14,95 @@ namespace Tukxel
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            KeyboardState keyboard = Keyboard.GetState();
+            try
+            {
+                KeyboardState keyboard = Keyboard.GetState();
 
-            Tukxel.keyboard = keyboard;
+                Tukxel.keyboard = keyboard;
 
-            Debugger.Update();
-            Tukxel.Update();
+                Debugger.Update();
+                Tukxel.Update();
 
-            base.OnUpdateFrame(e);
+                base.OnUpdateFrame(e);
+            }
+            catch (Exception error)
+            {
+                Debugger.Error(error.ToString(), "at Game.OnUpdateFrame(), updating the frame.");
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            try
+            {
+                GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            Renderer.Update();
+                Renderer.Update();
 
-            Context.SwapBuffers();
-            base.OnRenderFrame(e);
+                Context.SwapBuffers();
+                base.OnRenderFrame(e);
 
-            // FPS Tracking
-            FPSTracker.UpdateFPS();
+                // FPS Tracking
+                FPSTracker.UpdateFPS();
+            }
+            catch (Exception error)
+            {
+                Debugger.Error(error.ToString(), "at Game.OnRenderFrame(), rendering the frame.");
+            }
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            
+            try
+            {
+                GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+                Debugger.Setup();
+                Tukxel.Setup();
+                Renderer.Setup();
 
-            Debugger.Setup();
-            Tukxel.Setup();
-            Renderer.Setup();
-
-            base.OnLoad(e);
+                base.OnLoad(e);
+            }
+            catch (Exception error)
+            {
+                Debugger.Error(error.ToString(), "at Game.OnLoad(), loading the game.");
+            }
         }
 
         protected override void OnUnload(EventArgs e)
         {
-            Debugger.End = true;
+            try
+            {
+                Debugger.End = true;
 
-            Renderer.Unload();
+                Renderer.Unload();
 
-            base.OnUnload(e);
+                base.OnUnload(e);
+            }
+            catch (Exception error)
+            {
+                Debugger.Error(error.ToString(), "at Game.OnUnload, unloading the game.");
+            }
         }
 
         protected override void OnResize(EventArgs e)
         {
-            Width  = Width  == 0 ? 1 : Width;
-            Height = Height == 0 ? 1 : Height;
+            try
+            {
+                Width = Width == 0 ? 1 : Width;
+                Height = Height == 0 ? 1 : Height;
 
-            GL.Viewport(0, 0, Width, Height);
+                GL.Viewport(0, 0, Width, Height);
 
-            #region perspective?
-            #endregion
+                #region perspective?
+                #endregion
 
-            base.OnResize(e);
+                base.OnResize(e);
+            }
+            catch (Exception error)
+            {
+                Debugger.Error(error.ToString(), "at Game.OnResize(), resizing the screen.");
+            }
         }
     }
 }

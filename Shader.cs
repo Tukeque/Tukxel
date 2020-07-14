@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Graphics;
 
 namespace Tukxel
 {
@@ -13,63 +11,85 @@ namespace Tukxel
 
         public void Use()
         {
-            GL.UseProgram(Handle);
+            try
+            {
+                GL.UseProgram(Handle);
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.Use(), using the shader.");
+            }
         }
 
         public int GetAttribLocation(string attribName)
         {
-            return GL.GetAttribLocation(Handle, attribName);
+            try
+            {
+                return GL.GetAttribLocation(Handle, attribName);
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.GetAttribLocatin(), getting attribute location.");
+            }
+            return 0;
         }
 
         public Shader(string vertexPath, string fragmentPath)
         {
-            int VertexShader;
-            int FragmentShader;
+            try
+            {
+                int VertexShader;
+                int FragmentShader;
 
-            // Getting source into shaders
+                // Getting source into shaders
 
-            string VertexShaderSource;
+                string VertexShaderSource;
 
-            StreamReader reader = new StreamReader(vertexPath, Encoding.UTF8);
+                StreamReader reader = new StreamReader(vertexPath, Encoding.UTF8);
 
-            VertexShaderSource = reader.ReadToEnd();
+                VertexShaderSource = reader.ReadToEnd();
 
-            string FragmentShaderSource;
+                string FragmentShaderSource;
 
-            reader = new StreamReader(fragmentPath, Encoding.UTF8);
-            FragmentShaderSource = reader.ReadToEnd();
+                reader = new StreamReader(fragmentPath, Encoding.UTF8);
+                FragmentShaderSource = reader.ReadToEnd();
 
-            VertexShader = GL.CreateShader(ShaderType.VertexShader);
-            GL.ShaderSource(VertexShader, VertexShaderSource);
+                VertexShader = GL.CreateShader(ShaderType.VertexShader);
+                GL.ShaderSource(VertexShader, VertexShaderSource);
 
-            FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(FragmentShader, FragmentShaderSource);
+                FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+                GL.ShaderSource(FragmentShader, FragmentShaderSource);
 
-            // Compiling shaders
+                // Compiling shaders
 
-            GL.CompileShader(VertexShader);
+                GL.CompileShader(VertexShader);
 
-            string infoLogVert = GL.GetShaderInfoLog(VertexShader);
-            if (infoLogVert != String.Empty) Debugger.Error(infoLogVert, "compiling vertex shader(in shader class)");
+                string infoLogVert = GL.GetShaderInfoLog(VertexShader);
+                if (infoLogVert != String.Empty) Debugger.Error(infoLogVert, "compiling vertex shader(in shader class)");
 
-            GL.CompileShader(FragmentShader);
+                GL.CompileShader(FragmentShader);
 
-            string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
-            if (infoLogFrag != String.Empty) Debugger.Error(infoLogFrag, "compiling fragment shader(in shader class)");
+                string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
+                if (infoLogFrag != String.Empty) Debugger.Error(infoLogFrag, "compiling fragment shader(in shader class)");
 
-            Handle = GL.CreateProgram();
+                Handle = GL.CreateProgram();
 
-            GL.AttachShader(Handle, VertexShader);
-            GL.AttachShader(Handle, FragmentShader);
+                GL.AttachShader(Handle, VertexShader);
+                GL.AttachShader(Handle, FragmentShader);
 
-            GL.LinkProgram(Handle);
+                GL.LinkProgram(Handle);
 
-            // Cleaning up
+                // Cleaning up
 
-            GL.DetachShader(Handle, VertexShader);
-            GL.DetachShader(Handle, FragmentShader);
-            GL.DeleteShader(FragmentShader);
-            GL.DeleteShader(VertexShader);
+                GL.DetachShader(Handle, VertexShader);
+                GL.DetachShader(Handle, FragmentShader);
+                GL.DeleteShader(FragmentShader);
+                GL.DeleteShader(VertexShader);
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.Shader(), constructing the shader.");
+            }
         }
 
         // Deleting when application closed
@@ -78,23 +98,44 @@ namespace Tukxel
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            try
             {
-                GL.DeleteProgram(Handle);
+                if (!disposedValue)
+                {
+                    GL.DeleteProgram(Handle);
 
-                disposedValue = true;
+                    disposedValue = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.Dispose(), disposing the shader.");
             }
         }
 
         ~Shader()
         {
-            GL.DeleteProgram(Handle);
+            try
+            {
+                GL.DeleteProgram(Handle);
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.~Shader()(??wot)");
+            }
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at Shader.Dispose(), disposing the shader.");
+            }
         }
     }
 }

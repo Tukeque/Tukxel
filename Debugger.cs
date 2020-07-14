@@ -28,30 +28,50 @@ namespace Tukxel
 
         public static void Update()
         {
+            try
+            {
 
+            }
+            catch (Exception e)
+            {
+                Error(e.ToString(), "at Debugger.Update(), updating the debugger.");
+            }
         }
 
         public static void Setup()
         {
-            ThreadName = "[Main Thread]";
-            DebugWriteLine("Thread initialized");
+            try
+            {
+                ThreadName = "[Main Thread]";
+                DebugWriteLine("Thread initialized");
 
-            Thread fpsTracker = new Thread(new ThreadStart(FPSTracker.TheSetup));
-            fpsTracker.Start();
+                Thread fpsTracker = new Thread(new ThreadStart(FPSTracker.TheSetup));
+                fpsTracker.Start();
+            }
+            catch (Exception e)
+            {
+                Error(e.ToString(), "at Debugger.Setup(), Setting up the debugger.");
+            }
         }
-
-
 
         public static void Error(string error, string location)
         {
-            DebugWriteLine("haha error occured rib, error is: " + error + "\n and it come from: " + location);
+            try
+            {
+                DebugWriteLine(String.Format("haha error occured rib, error is: {0}\nand it come from: {1}", error, location));
+                Console.ReadKey();
+                Environment.Exit(0x00);
+            }
+            catch (Exception e)
+            {
+                Error(e.ToString(), "at Debugger.Error()");
+            }
         }
     }
 
     class FPSTracker
     {
         public static Stopwatch stopwatch;
-        public static long ticks;
 
         public static double es;
 
@@ -70,38 +90,65 @@ namespace Tukxel
 
         public static void TheSetup()
         {
-            Setup();
-
-            while (!Debugger.End)
+            try
             {
-                Thread.Sleep(1000);
-                Update();
+                Setup();
+
+                while (!Debugger.End)
+                {
+                    Thread.Sleep(1000);
+                    Update();
+                }
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at FPSTracker.TheSetup(), initialiozing FPSTracker thread");
             }
         }
 
         public static void Update()
         {
-            es = 1.0d / fps;
-            Game.DeltaTime = es;
-            DebugWriteLine(string.Format("FPS = {0}; ES = {1}", fps, es));
-            // DeltaTime should be elapssed seconds
-            fps = 0;
+            try
+            {
+                es = 1.0d / fps;
+                Game.DeltaTime = es;
+                DebugWriteLine(string.Format("FPS = {0}; ES = {1}", fps, es));
+                // DeltaTime should be elapssed seconds
+                fps = 0;
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at FPSTracker.Update(), updating frames.");
+            }
         }
 
         public static void Setup()
         {
-            ThreadName = "[FPS Tracker]";
+            try
+            {
+                ThreadName = "[FPS Tracker]";
 
-            stopwatch = new Stopwatch();
+                stopwatch = new Stopwatch();
 
-            fps = 0;
-            DebugWriteLine("Thread Initialized");
+                fps = 0;
+                DebugWriteLine("Thread Initialized");
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at FPSTracker.Setup(), setting FPSTracker thread up.");
+            }
         }
 
         public static void UpdateFPS()
         {
-            fps++;
-            ticks = 0;
+            try
+            {
+                fps++;
+            }
+            catch (Exception e)
+            {
+                Debugger.Error(e.ToString(), "at FPSTracker.UpdateFps(), incrementing FPS.");
+            }
         }
     }
 }
