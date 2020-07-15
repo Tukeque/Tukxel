@@ -1,4 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using OpenTK;
+using OpenTK.Graphics;
 using System;
 
 namespace Tukxel
@@ -12,8 +14,8 @@ namespace Tukxel
     class Renderer
     {
         // Matrices
-        public static Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-55.0f));
-        public static Matrix4 scale = Matrix4.CreateScale(1.0f, 1.0f, 1.0f);
+        public static Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(55.0f));
+        public static Matrix4 scale = Matrix4.CreateScale(1.0f, -1.0f, 1.0f);
         public static Matrix4 view = Matrix4.CreateTranslation(0.0f, -2.0f, -5.0f);
         public static Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
         public static Matrix4 trans = rotation * scale * view * perspective;
@@ -72,10 +74,10 @@ namespace Tukxel
                 rectangol.verts = new float[]
                 {
                 // [Position      ] [Texture coords]
-                     0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
-                     0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // bottom right
-                    -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // bottom left
-                    -0.5f,  0.5f,  0.0f, 0.0f, 1.0f  // top left
+                     0.5f,  0.5f,  0.0f, 1.0f, 0.0f, // top right
+                     0.5f, -0.5f,  0.0f, 1.0f, 1.0f, // bottom right
+                    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, // bottom left
+                    -0.5f,  0.5f,  0.0f, 0.0f, 0.0f  // top left
                 };
                 rectangol.indices = new uint[]
                 {
@@ -98,7 +100,7 @@ namespace Tukxel
                 // Creating texture and shader
                 shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
                 shader.Use();
-                texture = new Texture("Images/summer.jpg");
+                texture = new Texture("Images/pog.png");
                 texture.Use();
 
 
