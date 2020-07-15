@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace Tukxel
@@ -8,7 +7,6 @@ namespace Tukxel
     {
         public float[] verts;
         public uint[]  indices;
-        public float[] texCoords;
     }
 
     class Renderer
@@ -24,7 +22,6 @@ namespace Tukxel
         public static Texture texture;
 
         public static Mesh rectangol;
-        public static Mesh triangol;
 
         public static int ElementBufferObject;
         public static int VertexBufferObject;
@@ -75,62 +72,15 @@ namespace Tukxel
                 rectangol.verts = new float[]
                 {
                 // [Position      ] [Texture coords]
-                 1.0f,  1.0f,  0.0f, 2.0f, 2.0f, // top right
-                 1.0f, -1.0f,  0.0f, 2.0f, 0.0f, // bottom right
-                -1.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom left
-                -1.0f,  1.0f,  0.0f, 0.0f, 2.0f  // top left
+                     0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
+                     0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // bottom right
+                    -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // bottom left
+                    -0.5f,  0.5f,  0.0f, 0.0f, 1.0f  // top left
                 };
                 rectangol.indices = new uint[]
                 {
-                0, 1, 3, // first triangle
-                1, 2, 3  // second triangle
-                };
-                #endregion
-
-                int s = 0;
-                for (int i = 0; i < rectangol.verts.Length; i++)
-                {
-                    switch (s)
-                    {
-                        case 0:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 1:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 2:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 3:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 4:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-                    }
-                    s = (s + 1) % 5;
-                }
-
-                #region triangol
-                triangol.verts = new float[]
-                {
-                 0.5f, -0.5f,  0.0f, // bottom left
-                -0.5f, -0.5f,  0.0f, // bottom right
-                 0.0f,  0.5f,  0.0f  // middle top
-                };
-                triangol.indices = new uint[]
-                {
-                0, 1, 2, // triangol
-                };
-                triangol.texCoords = new float[]
-                {
-                0.0f, 0.0f, // bottom left corner
-                1.0f, 0.0f, // bottom right corner
-                0.5f, 1.0f  // top center corner
+                    0, 1, 3, // first triangle
+                    1, 2, 3  // second triangle
                 };
                 #endregion
 

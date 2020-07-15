@@ -2,6 +2,7 @@
 using System.Text;
 using System.IO;
 using OpenTK.Graphics.OpenGL;
+using OpenTK;
 
 namespace Tukxel
 {
