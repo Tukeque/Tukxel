@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace Tukxel
@@ -12,6 +13,11 @@ namespace Tukxel
 
     class Renderer
     {
+        // Matrices
+        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
+        public static Matrix4 scale = Matrix4.CreateScale(1.5f, 0.5f, 1.0f);
+        public static Matrix4 trans = rotation * scale;
+
         public static Shader shader;
         public static Texture texture;
 
@@ -32,7 +38,7 @@ namespace Tukxel
 
                 GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
 
-                float change = 0.05f;
+                float change = 0.00f;
                 int s = 0;
                 for (int i = 0; i < rectangol.verts.Length; i++)
                 {

@@ -14,6 +14,10 @@ namespace Tukxel
             try
             {
                 GL.UseProgram(Handle);
+
+                int location = GL.GetUniformLocation(Handle, "transform");
+
+                GL.UniformMatrix4(location, true, ref Renderer.trans);
             }
             catch (Exception e)
             {
