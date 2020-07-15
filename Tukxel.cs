@@ -9,16 +9,16 @@ namespace Tukxel
         public enum GameState { TUKXELSP, MENU }
         public static GameState gameState;
 
+        public static Game game;
+
         public static void Main ()
         {
             try
             {
                 Console.Title = "Tukxel Console";
 
-                using Game game = new Game(800, 600, "Tukxel");
-                {
-                    game.Run(60, 60);
-                }
+                game = new Game(800, 600, "Tukxel");
+                game.Run(60, 60);
             }
             catch (Exception e)
             {

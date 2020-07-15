@@ -13,10 +13,9 @@ namespace Tukxel
 
     class Renderer
     {
-        // Matrices
-        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
-        public static Matrix4 scale = Matrix4.CreateScale(1.5f, 0.5f, 1.0f);
-        public static Matrix4 trans = rotation * scale;
+        public static Matrix4 model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-55.0f));
+        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
+        public static Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.game.Width / Tukxel.game.Height, 0.1f, 100.0f);
 
         public static Shader shader;
         public static Texture texture;
@@ -32,6 +31,10 @@ namespace Tukxel
         {
             try
             {
+                shader.SetMatrix4("model", model);
+                shader.SetMatrix4("view", view);
+                shader.SetMatrix4("projection", projection);
+
                 shader.Use();
                 GL.BindVertexArray(VertexArrayObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
@@ -133,6 +136,8 @@ namespace Tukxel
                 #endregion
 
                 #region OpenGL stuff
+                GL.Enable(EnableCap.DepthTest);
+
                 // Vertex Array Object
                 VertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(VertexArrayObject);
