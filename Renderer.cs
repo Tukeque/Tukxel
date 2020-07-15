@@ -8,20 +8,19 @@ namespace Tukxel
     {
         public float[] verts;
         public uint[]  indices;
-        public float[] texCoords;
     }
 
     class Renderer
     {
-        public static Matrix4 model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-55.0f));
-        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
-        public static Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.game.Width / Tukxel.game.Height, 0.1f, 100.0f);
+
+        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-45.0f));
+        public static Matrix4 scale = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+        public static Matrix4 trans = rotation * scale;
 
         public static Shader shader;
         public static Texture texture;
 
         public static Mesh rectangol;
-        public static Mesh triangol;
 
         public static int ElementBufferObject;
         public static int VertexBufferObject;
@@ -31,36 +30,11 @@ namespace Tukxel
         {
             try
             {
-                shader.SetMatrix4("model", model);
-                shader.SetMatrix4("view", view);
-                shader.SetMatrix4("projection", projection);
-
                 shader.Use();
                 GL.BindVertexArray(VertexArrayObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
 
                 GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
-
-                float change = 0.00f;
-                int s = 0;
-                for (int i = 0; i < rectangol.verts.Length; i++)
-                {
-                    switch (s)
-                    {
-                        case 0:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-
-                        case 1:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-
-                        case 2:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-                    }
-                    s = (s + 1) % 5;
-                }
             }
             catch (Exception e)
             {
@@ -76,68 +50,19 @@ namespace Tukxel
                 rectangol.verts = new float[]
                 {
                 // [Position      ] [Texture coords]
-                 1.0f,  1.0f,  0.0f, 2.0f, 2.0f, // top right
-                 1.0f, -1.0f,  0.0f, 2.0f, 0.0f, // bottom right
-                -1.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom left
-                -1.0f,  1.0f,  0.0f, 0.0f, 2.0f  // top left
+                     0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // top right
+                     0.5f, -0.5f,  0.0f, 1.0f, 0.0f, // bottom right
+                    -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, // bottom left
+                    -0.5f,  0.5f,  0.0f, 0.0f, 1.0f  // top left
                 };
                 rectangol.indices = new uint[]
                 {
-                0, 1, 3, // first triangle
-                1, 2, 3  // second triangle
-                };
-                #endregion
-
-                int s = 0;
-                for (int i = 0; i < rectangol.verts.Length; i++)
-                {
-                    switch (s)
-                    {
-                        case 0:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 1:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 2:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 3:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-
-                        case 4:
-                            rectangol.verts[i] = rectangol.verts[i] / 2.0f;
-                            break;
-                    }
-                    s = (s + 1) % 5;
-                }
-
-                #region triangol
-                triangol.verts = new float[]
-                {
-                 0.5f, -0.5f,  0.0f, // bottom left
-                -0.5f, -0.5f,  0.0f, // bottom right
-                 0.0f,  0.5f,  0.0f  // middle top
-                };
-                triangol.indices = new uint[]
-                {
-                0, 1, 2, // triangol
-                };
-                triangol.texCoords = new float[]
-                {
-                0.0f, 0.0f, // bottom left corner
-                1.0f, 0.0f, // bottom right corner
-                0.5f, 1.0f  // top center corner
+                    0, 1, 3, // first triangle
+                    1, 2, 3  // second triangle
                 };
                 #endregion
 
                 #region OpenGL stuff
-                GL.Enable(EnableCap.DepthTest);
-
                 // Vertex Array Object
                 VertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(VertexArrayObject);

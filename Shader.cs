@@ -10,34 +10,14 @@ namespace Tukxel
     {
         public int Handle;
 
-        public void SetMatrix4(string name, Matrix4 matrix)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Debugger.Error(e.ToString(), "at Shader.SetMatrix4(), trying to set a matrix.");
-            }
-        }
-
         public void Use()
         {
             try
             {
                 GL.UseProgram(Handle);
 
-                int location = 0;
-
-                location = GL.GetUniformLocation(Handle, "model");
-                GL.UniformMatrix4(location, true, ref Renderer.model);
-
-                location = GL.GetUniformLocation(Handle, "view");
-                GL.UniformMatrix4(location, true, ref Renderer.view);
-
-                location = GL.GetUniformLocation(Handle, "projection");
-                GL.UniformMatrix4(location, true, ref Renderer.projection);
+                int location = GL.GetUniformLocation(Handle, "model");
+                GL.UniformMatrix4(location, true, ref Renderer.trans);
             }
             catch (Exception e)
             {
