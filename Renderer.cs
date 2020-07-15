@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace Tukxel
@@ -12,9 +11,9 @@ namespace Tukxel
 
     class Renderer
     {
-
-        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-45.0f));
-        public static Matrix4 scale = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+        // Matrices
+        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
+        public static Matrix4 scale = Matrix4.CreateScale(1.5f, 0.5f, 1.0f);
         public static Matrix4 trans = rotation * scale;
 
         public static Shader shader;
@@ -35,6 +34,27 @@ namespace Tukxel
                 GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
 
                 GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
+
+                float change = 0.00f;
+                int s = 0;
+                for (int i = 0; i < rectangol.verts.Length; i++)
+                {
+                    switch (s)
+                    {
+                        case 0:
+                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                            break;
+
+                        case 1:
+                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                            break;
+
+                        case 2:
+                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
+                            break;
+                    }
+                    s = (s + 1) % 5;
+                }
             }
             catch (Exception e)
             {
