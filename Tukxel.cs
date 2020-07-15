@@ -9,6 +9,9 @@ namespace Tukxel
         public enum GameState { TUKXELSP, MENU }
         public static GameState gameState;
 
+        public static int Width;
+        public static int Height;
+
         public static void Main ()
         {
             try
@@ -17,6 +20,9 @@ namespace Tukxel
 
                 using Game game = new Game(800, 600, "Tukxel");
                 {
+                    Width = game.Width;
+                    Height = game.Height;
+
                     game.Run(60, 60);
                 }
             }

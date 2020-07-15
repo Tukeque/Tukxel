@@ -14,9 +14,11 @@ namespace Tukxel
     class Renderer
     {
         // Matrices
-        public static Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
-        public static Matrix4 scale = Matrix4.CreateScale(1.5f, 0.5f, 1.0f);
-        public static Matrix4 trans = rotation * scale;
+        public static Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-55.0f));
+        public static Matrix4 scale = Matrix4.CreateScale(1.0f, 1.0f, 1.0f);
+        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, -2.0f, -5.0f);
+        public static Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
+        public static Matrix4 trans = rotation * scale * view * perspective;
 
         public static Shader shader;
         public static Texture texture;

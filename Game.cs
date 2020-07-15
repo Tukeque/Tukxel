@@ -94,8 +94,8 @@ namespace Tukxel
 
                 GL.Viewport(0, 0, Width, Height);
 
-                #region perspective?
-                #endregion
+                Tukxel.Width = Width;
+                Tukxel.Height = Height;
 
                 base.OnResize(e);
             }
