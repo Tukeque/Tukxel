@@ -6,7 +6,7 @@ using OpenTK;
 
 namespace Tukxel
 {
-    class Shader : IDisposable
+    public class Shader : IDisposable
     {
         public int Handle;
 
@@ -16,15 +16,16 @@ namespace Tukxel
             {
                 GL.UseProgram(Handle);
                 int location = 0;
-                location = GL.GetUniformLocation(Handle, "model");
-                GL.UniformMatrix4(location, true, ref Renderer.model);
+
+                location = GL.GetUniformLocation(Handle, "projection");
+                GL.UniformMatrix4(location, true, ref Renderer.projection);
 
                 location = GL.GetUniformLocation(Handle, "view");
                 GL.UniformMatrix4(location, true, ref Renderer.view);
 
-                location = GL.GetUniformLocation(Handle, "projection");
-                GL.UniformMatrix4(location, true, ref Renderer.projection);
-                
+                location = GL.GetUniformLocation(Handle, "model");
+                GL.UniformMatrix4(location, true, ref Renderer.model);
+
             }
             catch (Exception e)
             {

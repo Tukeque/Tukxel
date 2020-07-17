@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Tukxel
 {
-    class Texture
+    public class Texture
     {
         public int Handle;
 
