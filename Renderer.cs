@@ -16,9 +16,15 @@ namespace Tukxel
         // Matrices
         public static Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(55.0f));
         public static Matrix4 scale = Matrix4.CreateScale(1.0f, -1.0f, 1.0f);
-        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, -2.0f, -5.0f);
+        public static Matrix4 viewview = Matrix4.CreateTranslation(0.0f, -2.0f, -5.0f);
         public static Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
-        public static Matrix4 trans = rotation * scale * view * perspective;
+        public static Matrix4 trans = rotation * scale * viewview * perspective;
+
+        public static Matrix4 model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(55.0f));
+        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
+        public static Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
+
+
 
         public static Shader shader;
         public static Texture texture;
@@ -38,27 +44,6 @@ namespace Tukxel
                 GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
 
                 GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
-
-                float change = 0.00f;
-                int s = 0;
-                for (int i = 0; i < rectangol.verts.Length; i++)
-                {
-                    switch (s)
-                    {
-                        case 0:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-
-                        case 1:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-
-                        case 2:
-                            rectangol.verts[i] += (change * (float)Game.DeltaTime);
-                            break;
-                    }
-                    s = (s + 1) % 5;
-                }
             }
             catch (Exception e)
             {

@@ -14,11 +14,18 @@ namespace Tukxel
         {
             try
             {
+                
+                int location = 0;
+                location = GL.GetUniformLocation(Handle, "model");
+                GL.UniformMatrix4(location, true, ref Renderer.model);
+
+                location = GL.GetUniformLocation(Handle, "view");
+                GL.UniformMatrix4(location, true, ref Renderer.view);
+
+                location = GL.GetUniformLocation(Handle, "projection");
+                GL.UniformMatrix4(location, true, ref Renderer.projection);
+
                 GL.UseProgram(Handle);
-
-                int location = GL.GetUniformLocation(Handle, "transform");
-
-                GL.UniformMatrix4(location, true, ref Renderer.trans);
             }
             catch (Exception e)
             {
