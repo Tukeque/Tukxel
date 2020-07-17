@@ -5,8 +5,69 @@ using System;
 
 namespace Tukxel
 {
+    static class Camera
+    {
+        public static float x  = 0;
+        public static float y  = 0;
+        public static float z  = 0;
+
+        public static float rx = 0;
+        public static float ry = 0;
+        public static float rz = 0;
+
+        public static float FoV   = 85.0f;
+        public static float zNear = 0.001f;
+        public static float zFar  = 1000.0f;
+        public static float Aspect = Tukxel.Width / Tukxel.Height;
+
+        #region Matrices
+        public static Matrix4 rotate;
+        public static Matrix4 translate;
+        public static Matrix4 projection;
+
+        public static Matrix4 CreateModel()
+        {
+            Matrix4 matrix;
+
+            matrix =  Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-rx));
+            matrix *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(-ry));
+            matrix *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-rz));
+
+            return matrix;
+        }
+
+        public static void UpdateMatrices()
+        {
+            rotate = CreateModel();
+            translate = Matrix4.CreateTranslation(-x, -y, -z);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FoV), Aspect, zNear, zFar);
+        }
+        #endregion
+
+        public static void Update()
+        {
+            UpdateMatrices();
+        }
+
+        public static void Setup()
+        {
+            UpdateMatrices();
+        }
+    }
+
     public struct Mesh
     {
+        public static Matrix4 CreateRotation(float x, float y, float z)
+        {
+            Matrix4 matrix;
+
+            matrix =  Matrix4.CreateRotationX(MathHelper.DegreesToRadians(x));
+            matrix *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(y));
+            matrix *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(z));
+
+            return matrix;
+        }
+
         public float[] verts;
         public uint[]  indices;
         public int ElementBufferObject;
@@ -18,11 +79,13 @@ namespace Tukxel
         public string ShaderVertexPath;
         public string ShaderFragmentPath;
         public string TexturePath;
+        public Matrix4 translate;
+        public Matrix4 rotate;
 
         public void Draw()
         {
             texture.Use();
-            shader.Use();
+            shader.Use(Camera.projection, rotate * Camera.rotate, translate * Camera.translate);
             GL.BindVertexArray(VertexArrayObject);
 
             if (UseElementBufferObject)
@@ -33,6 +96,9 @@ namespace Tukxel
 
         public void Setup()
         {
+            translate = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
+            rotate    = CreateRotation(0.0f, 0.0f, 0.0f);
+
             // Vertex Array Object
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
@@ -45,7 +111,7 @@ namespace Tukxel
 
             //Shader
             shader = new Shader(ShaderVertexPath, ShaderFragmentPath);
-            shader.Use();
+            shader.Use(Camera.projection, rotate * Camera.rotate, translate * Camera.translate);
 
             // Element Buffer Object
             if (UseElementBufferObject)
@@ -83,23 +149,7 @@ namespace Tukxel
 
     class Renderer
     {
-        public static Matrix4 CreateModel()
-        {
-            Matrix4 matrix;
-
-            matrix =  Matrix4.CreateRotationX(MathHelper.DegreesToRadians(theta * 2));
-            matrix *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(theta));
-            matrix *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(0.0f));
-
-            return matrix;
-        }
-
         static float theta;
-
-        // Matrices
-        public static Matrix4 model = CreateModel();
-        public static Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
-        public static Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
 
         public static Mesh rectangol;
         public static Mesh coob;
@@ -109,7 +159,8 @@ namespace Tukxel
             try
             {
                 theta++;
-                model = CreateModel();
+
+                coob.rotate = Mesh.CreateRotation(theta * 2, theta, 0.0f);
 
                 coob.Draw();
             }

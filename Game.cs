@@ -22,6 +22,7 @@ namespace Tukxel
 
                 Debugger.Update();
                 Tukxel.Update();
+                Camera.Update();
 
                 base.OnUpdateFrame(e);
             }
@@ -59,6 +60,7 @@ namespace Tukxel
 
                 Debugger.Setup();
                 Tukxel.Setup();
+                Camera.Setup();
                 Renderer.Setup();
 
                 base.OnLoad(e);
