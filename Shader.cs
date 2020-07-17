@@ -14,7 +14,7 @@ namespace Tukxel
         {
             try
             {
-                
+                GL.UseProgram(Handle);
                 int location = 0;
                 location = GL.GetUniformLocation(Handle, "model");
                 GL.UniformMatrix4(location, true, ref Renderer.model);
@@ -24,8 +24,7 @@ namespace Tukxel
 
                 location = GL.GetUniformLocation(Handle, "projection");
                 GL.UniformMatrix4(location, true, ref Renderer.projection);
-
-                GL.UseProgram(Handle);
+                
             }
             catch (Exception e)
             {
