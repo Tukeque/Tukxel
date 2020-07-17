@@ -35,7 +35,7 @@ namespace Tukxel
         {
             try
             {
-                GL.Clear(ClearBufferMask.ColorBufferBit);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
                 Renderer.Update();
 

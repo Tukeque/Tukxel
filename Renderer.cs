@@ -2,6 +2,7 @@
 using OpenTK;
 using OpenTK.Graphics;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Tukxel
 {
@@ -13,23 +14,18 @@ namespace Tukxel
 
     class Renderer
     {
-        // Matrices
-        public static Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(55.0f));
-        public static Matrix4 scale = Matrix4.CreateScale(1.0f, -1.0f, 1.0f);
-        public static Matrix4 viewview = Matrix4.CreateTranslation(0.0f, -2.0f, -5.0f);
-        public static Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
-        public static Matrix4 trans = rotation * scale * viewview * perspective;
+        static int theta;
 
-        public static Matrix4 model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(55.0f));
+        // Matrices
+        public static Matrix4 model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(theta));
         public static Matrix4 view = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
         public static Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Tukxel.Width / Tukxel.Height, 0.1f, 100.0f);
-
-
 
         public static Shader shader;
         public static Texture texture;
 
         public static Mesh rectangol;
+        public static Mesh coob;
 
         public static int ElementBufferObject;
         public static int VertexBufferObject;
@@ -39,11 +35,15 @@ namespace Tukxel
         {
             try
             {
+                theta++;
+                model = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(theta));
+
                 shader.Use();
                 GL.BindVertexArray(VertexArrayObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.DynamicDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, coob.verts.Length * sizeof(float), coob.verts, BufferUsageHint.DynamicDraw);
 
-                GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0);
+                //GL.DrawElements(PrimitiveType.Triangles, rectangol.indices.Length, DrawElementsType.UnsignedInt, 0); // <- used for EBO
+                GL.DrawArrays(PrimitiveType.Triangles, 0, coob.verts.Length);
             }
             catch (Exception e)
             {
@@ -71,7 +71,56 @@ namespace Tukxel
                 };
                 #endregion
 
+                #region coob
+                coob.verts = new float[]
+                {
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+                };
+                #endregion
+
                 #region OpenGL stuff
+                GL.Enable(EnableCap.DepthTest);
+
                 // Vertex Array Object
                 VertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(VertexArrayObject);
@@ -80,7 +129,7 @@ namespace Tukxel
                 VertexBufferObject = GL.GenBuffer();
 
                 GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, rectangol.verts.Length * sizeof(float), rectangol.verts, BufferUsageHint.StaticDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, coob.verts.Length * sizeof(float), coob.verts, BufferUsageHint.StaticDraw);
 
                 // Creating texture and shader
                 shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
@@ -88,11 +137,10 @@ namespace Tukxel
                 texture = new Texture("Images/pog.png");
                 texture.Use();
 
-
                 // Element Buffer Object
-                ElementBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, rectangol.indices.Length * sizeof(uint), rectangol.indices, BufferUsageHint.StaticDraw);
+                //ElementBufferObject = GL.GenBuffer();
+                //GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+                //GL.BufferData(BufferTarget.ElementArrayBuffer, coob.indices.Length * sizeof(uint), coob.indices, BufferUsageHint.StaticDraw);
 
                 // Vertex Attribute Pointer
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
