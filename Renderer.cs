@@ -5,56 +5,6 @@ using System;
 
 namespace Tukxel
 {
-    static class Camera
-    {
-        public static float x  = 0;
-        public static float y  = 0;
-        public static float z  = 0;
-
-        public static float rx = 0;
-        public static float ry = 0;
-        public static float rz = 0;
-
-        public static float FoV   = 85.0f;
-        public static float zNear = 0.001f;
-        public static float zFar  = 1000.0f;
-        public static float Aspect = Tukxel.Width / Tukxel.Height;
-
-        #region Matrices
-        public static Matrix4 rotate;
-        public static Matrix4 translate;
-        public static Matrix4 projection;
-
-        public static Matrix4 CreateModel()
-        {
-            Matrix4 matrix;
-
-            matrix =  Matrix4.CreateRotationX(MathHelper.DegreesToRadians(-rx));
-            matrix *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(-ry));
-            matrix *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-rz));
-
-            return matrix;
-        }
-
-        public static void UpdateMatrices()
-        {
-            rotate = CreateModel();
-            translate = Matrix4.CreateTranslation(-x, -y, -z);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FoV), Aspect, zNear, zFar);
-        }
-        #endregion
-
-        public static void Update()
-        {
-            UpdateMatrices();
-        }
-
-        public static void Setup()
-        {
-            UpdateMatrices();
-        }
-    }
-
     public struct Mesh
     {
         public static Matrix4 CreateRotation(float x, float y, float z)
@@ -85,7 +35,7 @@ namespace Tukxel
         public void Draw()
         {
             texture.Use();
-            shader.Use(Camera.projection, rotate * Camera.rotate, translate * Camera.translate);
+            shader.Use(Camera.projection, rotate, translate * Camera.view);
             GL.BindVertexArray(VertexArrayObject);
 
             if (UseElementBufferObject)
@@ -111,7 +61,7 @@ namespace Tukxel
 
             //Shader
             shader = new Shader(ShaderVertexPath, ShaderFragmentPath);
-            shader.Use(Camera.projection, rotate * Camera.rotate, translate * Camera.translate);
+            shader.Use(Camera.projection, rotate, translate * Camera.view);
 
             // Element Buffer Object
             if (UseElementBufferObject)
@@ -151,13 +101,14 @@ namespace Tukxel
     {
         static float theta;
 
-        public static Mesh rectangol;
         public static Mesh coob;
 
         public static void Update()
         {
             try
             {
+                Camera.Update();
+
                 theta++;
 
                 coob.rotate = Mesh.CreateRotation(theta * 2, theta, 0.0f);
@@ -176,21 +127,7 @@ namespace Tukxel
             {
                 GL.Enable(EnableCap.DepthTest);
 
-                #region rectangol
-                rectangol.verts = new float[]
-                {
-                // [Position      ] [Texture coords]
-                     0.5f,  0.5f,  0.0f, 1.0f, 0.0f, // top right
-                     0.5f, -0.5f,  0.0f, 1.0f, 1.0f, // bottom right
-                    -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, // bottom left
-                    -0.5f,  0.5f,  0.0f, 0.0f, 0.0f  // top left
-                };
-                rectangol.indices = new uint[]
-                {
-                    0, 1, 3, // first triangle
-                    1, 2, 3  // second triangle
-                };
-                #endregion
+                Camera.Setup();
 
                 #region coob
                 coob.verts = new float[]

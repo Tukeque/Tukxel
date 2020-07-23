@@ -16,13 +16,14 @@ namespace Tukxel
         {
             try
             {
+                Tukxel.Focused = Focused;
+
                 KeyboardState keyboard = Keyboard.GetState();
 
                 Tukxel.keyboard = keyboard;
 
                 Debugger.Update();
                 Tukxel.Update();
-                Camera.Update();
 
                 base.OnUpdateFrame(e);
             }
@@ -60,7 +61,6 @@ namespace Tukxel
 
                 Debugger.Setup();
                 Tukxel.Setup();
-                Camera.Setup();
                 Renderer.Setup();
 
                 base.OnLoad(e);

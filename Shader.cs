@@ -41,7 +41,7 @@ namespace Tukxel
             }
             catch (Exception e)
             {
-                Debugger.Error(e.ToString(), "at Shader.GetAttribLocatin(), getting attribute location.");
+                Debugger.Error(e.ToString(), "at Shader.GetAttribLocation(), getting attribute location.");
             }
             return 0;
         }

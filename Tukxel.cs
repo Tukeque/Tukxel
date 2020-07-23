@@ -10,12 +10,15 @@ namespace Tukxel
         public enum GameState { TUKXELSP, MENU }
         public static GameState gameState;
 
+        // Game(class) stuff
         public static int Width;
         public static int Height;
+        public static bool Focused;
 
-        public static int speed;
+        public static float speed;
+        public static float rawSpeed;
 
-        public static void Main ()
+        public static void Main()
         {
             try
             {
@@ -39,64 +42,51 @@ namespace Tukxel
         {
             try
             {
+                KeyboardState keyboard = Keyboard.GetState();
+
                 if (keyboard.IsKeyDown(Key.Escape))
                 {
                     Environment.Exit(0x00);
                 }
 
-                if (keyboard.IsKeyDown(Key.AltLeft) | keyboard.IsKeyDown(Key.AltRight) && keyboard.IsKeyDown(Key.F4))
+                if ((keyboard.IsKeyDown(Key.AltLeft) | keyboard.IsKeyDown(Key.AltRight)) & keyboard.IsKeyDown(Key.F4))
                 {
                     Environment.Exit(0x00);
                 }
 
-                if (keyboard.IsKeyDown(Key.W))
-                {
-                    Vector4 movement = -Vector4.UnitZ * Camera.rotate * speed * (float)Game.DeltaTime;
+                #region cameraMovement
+                rawSpeed = speed * (float)Game.DeltaTime;
 
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
-                }
-                if (keyboard.IsKeyDown(Key.A))
-                {
-                    Vector4 movement = -Vector4.UnitX * Camera.rotate * speed * (float)Game.DeltaTime;
+                //Debugger.DebugWriteLine($"{rawSpeed}");
 
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
-                }
-                if (keyboard.IsKeyDown(Key.S))
+                if (true)
                 {
-                    Vector4 movement = Vector4.UnitZ * Camera.rotate * speed * (float)Game.DeltaTime;
-
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
+                    if (keyboard.IsKeyDown(Key.W))
+                    {
+                        Camera.position += Camera.front * speed;
+                    }
+                    if (keyboard.IsKeyDown(Key.A))
+                    {
+                        Camera.position -= Vector3.Normalize(Vector3.Cross(Camera.front, Camera.up)) * speed;
+                    }
+                    if (keyboard.IsKeyDown(Key.S))
+                    {
+                        Camera.position -= Camera.front * speed;
+                    }
+                    if (keyboard.IsKeyDown(Key.D))
+                    {
+                        Camera.position += Vector3.Normalize(Vector3.Cross(Camera.front, Camera.up)) * speed;
+                    }
+                    if (keyboard.IsKeyDown(Key.Q))
+                    {
+                        Camera.position -= Camera.up * speed;
+                    }
+                    if (keyboard.IsKeyDown(Key.E))
+                    {
+                        Camera.position += Camera.up * speed;
+                    }
                 }
-                if (keyboard.IsKeyDown(Key.D))
-                {
-                    Vector4 movement = Vector4.UnitX * Camera.rotate * speed * (float)Game.DeltaTime;
-
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
-                }
-                if (keyboard.IsKeyDown(Key.Q))
-                {
-                    Vector4 movement = -Vector4.UnitY * Camera.rotate * speed * (float)Game.DeltaTime;
-
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
-                }
-                if (keyboard.IsKeyDown(Key.E))
-                {
-                    Vector4 movement = Vector4.UnitY * Camera.rotate * speed * (float)Game.DeltaTime;
-
-                    Camera.x += movement.X;
-                    Camera.y += movement.Y;
-                    Camera.z += movement.Z;
-                }
+                #endregion
             }
             catch (Exception e)
             {
@@ -108,7 +98,7 @@ namespace Tukxel
         {
             try
             {
-                speed = 5;
+                speed = .5f;
 
                 gameState = GameState.TUKXELSP;
             }
