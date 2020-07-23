@@ -104,7 +104,7 @@ namespace Tukxel
             }
             catch (Exception e)
             {
-                Debugger.Error(e.ToString(), "at Tukxel.Setup() called by Game.OnLoad() i think may not be right lol");
+                Debugger.Error(e.ToString(), "at Tukxel.Setup() called by Game.OnLoad() i think may not be right lel");
             }
         }
     }
