@@ -59,7 +59,7 @@ namespace Tukxel
 
                 //Debugger.DebugWriteLine($"{rawSpeed}");
 
-                if (true)
+                if (Focused)
                 {
                     if (keyboard.IsKeyDown(Key.W))
                     {
