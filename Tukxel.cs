@@ -14,9 +14,16 @@ namespace Tukxel
         public static int Width;
         public static int Height;
         public static bool Focused;
+        public static bool CursorLockAndInvisible;
+        public static int EscTimer = 0;
 
+        // camera rotation and movement
         public static float speed;
-        public static float rawSpeed;
+        public static float sensitivity;
+
+        public static bool FirstMove = true;
+        public static Vector2 LastPos;
+        public static MouseState mouse = new MouseState();
 
         public static void Main()
         {
@@ -42,11 +49,19 @@ namespace Tukxel
         {
             try
             {
+                EscTimer = EscTimer == 0 ? 0 : EscTimer - 1;
+
                 KeyboardState keyboard = Keyboard.GetState();
 
                 if (keyboard.IsKeyDown(Key.Escape))
                 {
-                    Environment.Exit(0x00);
+                    if (CursorLockAndInvisible & EscTimer == 0)
+                    {
+                        CursorLockAndInvisible = false;
+                        EscTimer += 30;
+                    }
+                    else if (EscTimer == 0)
+                        Environment.Exit(0x00);
                 }
 
                 if ((keyboard.IsKeyDown(Key.AltLeft) | keyboard.IsKeyDown(Key.AltRight)) & keyboard.IsKeyDown(Key.F4))
@@ -54,37 +69,67 @@ namespace Tukxel
                     Environment.Exit(0x00);
                 }
 
-                #region cameraMovement
-                rawSpeed = speed * (float)Game.DeltaTime;
-
-                //Debugger.DebugWriteLine($"{rawSpeed}");
-
+                #region camera movement and rotation
                 if (Focused)
                 {
                     if (keyboard.IsKeyDown(Key.W))
                     {
-                        Camera.position += Camera.front * speed;
+                        Camera.position += Camera.front * speed * (float)Game.DeltaTime;
                     }
                     if (keyboard.IsKeyDown(Key.A))
                     {
-                        Camera.position -= Vector3.Normalize(Vector3.Cross(Camera.front, Camera.up)) * speed;
+                        Camera.position -= Vector3.Normalize(Vector3.Cross(Camera.front, Camera.cameraUp)) * speed * (float)Game.DeltaTime;
                     }
                     if (keyboard.IsKeyDown(Key.S))
                     {
-                        Camera.position -= Camera.front * speed;
+                        Camera.position -= Camera.front * speed * (float)Game.DeltaTime;
                     }
                     if (keyboard.IsKeyDown(Key.D))
                     {
-                        Camera.position += Vector3.Normalize(Vector3.Cross(Camera.front, Camera.up)) * speed;
+                        Camera.position += Vector3.Normalize(Vector3.Cross(Camera.front, Camera.cameraUp)) * speed * (float)Game.DeltaTime;
                     }
                     if (keyboard.IsKeyDown(Key.Q))
                     {
-                        Camera.position -= Camera.up * speed;
+                        Camera.position -= Camera.up * speed * (float)Game.DeltaTime;
                     }
                     if (keyboard.IsKeyDown(Key.E))
                     {
-                        Camera.position += Camera.up * speed;
+                        Camera.position += Camera.up * speed * (float)Game.DeltaTime;
                     }
+                }
+
+                mouse = Mouse.GetCursorState();
+
+                if (FirstMove)
+                {
+                    LastPos = new Vector2(mouse.X, mouse.Y);
+                    FirstMove = false;
+                }
+                else
+                {
+                    float deltaX = mouse.X - LastPos.X;
+                    float deltaY = mouse.Y - LastPos.Y;
+
+                    LastPos = new Vector2(mouse.X, mouse.Y);
+
+                    Camera.Yaw -= deltaX * sensitivity * (float)Game.DeltaTime;
+                    if (Camera.Pitch > 89.0f)
+                    {
+                        Camera.Pitch = 89.0f;
+                    }
+                    else if (Camera.Pitch < -89.0f)
+                    {
+                        Camera.Pitch = -89.0f;
+                    }
+                    else
+                    {
+                        Camera.Pitch += deltaY * sensitivity * (float)Game.DeltaTime;
+                    }
+
+                    Camera.front.X = (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Pitch)) * (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Yaw));
+                    Camera.front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(Camera.Pitch));
+                    Camera.front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Pitch)) * (float)Math.Sin(MathHelper.DegreesToRadians(Camera.Yaw));
+                    Camera.front = Vector3.Normalize(Camera.front);
                 }
                 #endregion
             }
@@ -98,7 +143,10 @@ namespace Tukxel
         {
             try
             {
-                speed = .5f;
+                CursorLockAndInvisible = false;
+
+                speed = 5f;
+                sensitivity = 10;
 
                 gameState = GameState.TUKXELSP;
             }

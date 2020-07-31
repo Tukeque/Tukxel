@@ -16,6 +16,8 @@ namespace Tukxel
         {
             try
             {
+                CursorVisible = !Tukxel.CursorLockAndInvisible;
+
                 Tukxel.Focused = Focused;
 
                 KeyboardState keyboard = Keyboard.GetState();
@@ -46,6 +48,7 @@ namespace Tukxel
 
                 // FPS Tracking
                 FPSTracker.UpdateFPS();
+                DeltaTime = e.Time;
             }
             catch (Exception error)
             {
@@ -105,6 +108,16 @@ namespace Tukxel
             {
                 Debugger.Error(error.ToString(), "at Game.OnResize(), resizing the screen.");
             }
+        }
+
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            if (Tukxel.CursorLockAndInvisible)
+            {
+                Mouse.SetPosition(X + Width / 2f, Y + Height / 2f);
+            }
+
+            base.OnMouseMove(e);
         }
     }
 }

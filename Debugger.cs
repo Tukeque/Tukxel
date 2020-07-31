@@ -111,9 +111,7 @@ namespace Tukxel
             try
             {
                 es = 1.0d / fps;
-                Game.DeltaTime = es;
                 DebugWriteLine(string.Format("FPS = {0}; ES = {1}", fps, es));
-                // DeltaTime should be elapssed seconds
                 fps = 0;
             }
             catch (Exception e)

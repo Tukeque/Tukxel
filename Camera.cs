@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using OpenTK;
 using OpenTK.Graphics;
@@ -23,6 +24,10 @@ namespace Tukxel
         public static Vector3 cameraRight;
         public static Vector3 cameraUp;
         public static Vector3 front;
+
+        //rotation
+        public static float Pitch;
+        public static float Yaw;
 
         // walk around
 
@@ -68,6 +73,8 @@ namespace Tukxel
             up = Vector3.UnitY;
             cameraRight = Vector3.Normalize(Vector3.Cross(up, cameraDirection));
             cameraUp = Vector3.Cross(cameraDirection, cameraRight);
+
+            //Debugger.DebugWriteLine($"pitch: {Pitch}, yaw: {Yaw}, roll: {Roll}");
 
             view = Matrix4.LookAt(position, position + front, up); // up != cameraup tho ??
         }
