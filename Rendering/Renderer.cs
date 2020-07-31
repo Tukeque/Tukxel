@@ -167,8 +167,8 @@ namespace Tukxel
 		            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
                 };
                 coob.UseElementBufferObject = false;
-                coob.ShaderFragmentPath = "Shaders/shader.frag";
-                coob.ShaderVertexPath   = "Shaders/shader.vert";
+                coob.ShaderFragmentPath = "Rendering/Shaders/shader.frag";
+                coob.ShaderVertexPath   = "Rendering/Shaders/shader.vert";
                 coob.TexturePath        = "Images/pog.png";
 
                 coob.Setup();
