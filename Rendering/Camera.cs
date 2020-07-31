@@ -25,11 +25,8 @@ namespace Tukxel
         public static Vector3 cameraUp;
         public static Vector3 front;
 
-        //rotation
         public static float Pitch;
         public static float Yaw;
-
-        // walk around
 
         public static Matrix4 view;
 
@@ -47,9 +44,6 @@ namespace Tukxel
         {
             UpdateProjection();
 
-            position = Vector3.Zero;
-
-            // walk around
             position = new Vector3(0.0f, 0.0f, 3.0f);
             front = new Vector3(0.0f, 0.0f, -1.0f);
 
@@ -60,7 +54,7 @@ namespace Tukxel
             cameraRight = Vector3.Normalize(Vector3.Cross(up, cameraDirection));
             cameraUp = Vector3.Cross(cameraDirection, cameraRight);
 
-            view = Matrix4.LookAt(position, position + front, up); // up != cameraup tho ??
+            view = Matrix4.LookAt(position, position + front, up);
         }
 
         public static void Update()
@@ -74,9 +68,7 @@ namespace Tukxel
             cameraRight = Vector3.Normalize(Vector3.Cross(up, cameraDirection));
             cameraUp = Vector3.Cross(cameraDirection, cameraRight);
 
-            //Debugger.DebugWriteLine($"pitch: {Pitch}, yaw: {Yaw}, roll: {Roll}");
-
-            view = Matrix4.LookAt(position, position + front, up); // up != cameraup tho ??
+            view = Matrix4.LookAt(position, position + front, up);
         }
     }
 }

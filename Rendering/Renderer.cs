@@ -49,21 +49,16 @@ namespace Tukxel
             translate = Matrix4.CreateTranslation(0.0f, 0.0f, -3.0f);
             rotate    = CreateRotation(0.0f, 0.0f, 0.0f);
 
-            // Vertex Array Object
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
-            // Vertex Buffer Object
             VertexBufferObject = GL.GenBuffer();
-
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, verts.Length * sizeof(float), verts, BufferUsageHint.StaticDraw);
 
-            //Shader
             shader = new Shader(ShaderVertexPath, ShaderFragmentPath);
             shader.Use(Camera.projection, rotate, translate * Camera.view);
 
-            // Element Buffer Object
             if (UseElementBufferObject)
             {
                 ElementBufferObject = GL.GenBuffer();
@@ -71,11 +66,9 @@ namespace Tukxel
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
             }
 
-            // Vertex Attribute Pointer
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            // Textures
             texture = new Texture(TexturePath);
             texture.Use();
 
@@ -129,56 +122,54 @@ namespace Tukxel
 
                 Camera.Setup();
 
-                #region coob
                 coob.verts = new float[]
                 {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,   
+		             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
                 };
                 coob.UseElementBufferObject = false;
                 coob.ShaderFragmentPath = "Shaders/shader.frag";
                 coob.ShaderVertexPath   = "Shaders/shader.vert";
                 coob.TexturePath        = "Images/pog.png";
-                #endregion
 
                 coob.Setup();
             }

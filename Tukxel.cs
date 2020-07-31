@@ -10,14 +10,12 @@ namespace Tukxel
         public enum GameState { TUKXELSP, MENU }
         public static GameState gameState;
 
-        // Game(class) stuff
         public static int Width;
         public static int Height;
         public static bool Focused;
         public static bool CursorLockAndInvisible;
         public static int EscTimer = 0;
 
-        // camera rotation and movement
         public static float speed;
         public static float sensitivity;
 
@@ -69,7 +67,6 @@ namespace Tukxel
                     Environment.Exit(0x00);
                 }
 
-                #region camera movement and rotation
                 if (Focused)
                 {
                     if (keyboard.IsKeyDown(Key.W))
@@ -131,7 +128,6 @@ namespace Tukxel
                     Camera.front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Pitch)) * (float)Math.Sin(MathHelper.DegreesToRadians(Camera.Yaw));
                     Camera.front = Vector3.Normalize(Camera.front);
                 }
-                #endregion
             }
             catch (Exception e)
             {

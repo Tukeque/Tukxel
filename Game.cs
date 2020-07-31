@@ -46,7 +46,6 @@ namespace Tukxel
                 Context.SwapBuffers();
                 base.OnRenderFrame(e);
 
-                // FPS Tracking
                 FPSTracker.UpdateFPS();
                 DeltaTime = e.Time;
             }
