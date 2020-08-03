@@ -35,7 +35,7 @@ namespace Tukxel
         public void Draw()
         {
             texture.Use();
-            shader.Use(Camera.projection, rotate, translate * Camera.view);
+            shader.Use(Camera.projection, rotate, translate, Camera.view);
             GL.BindVertexArray(VertexArrayObject);
 
             if (UseElementBufferObject)
@@ -57,7 +57,7 @@ namespace Tukxel
             GL.BufferData(BufferTarget.ArrayBuffer, verts.Length * sizeof(float), verts, BufferUsageHint.StaticDraw);
 
             shader = new Shader(ShaderVertexPath, ShaderFragmentPath);
-            shader.Use(Camera.projection, rotate, translate * Camera.view);
+            shader.Use(Camera.projection, rotate, translate, Camera.view);
 
             if (UseElementBufferObject)
             {
@@ -102,7 +102,7 @@ namespace Tukxel
             {
                 Camera.Update();
 
-                theta++;
+                //theta++;
 
                 coob.rotate = Mesh.CreateRotation(theta * 2, theta, 0.0f);
 

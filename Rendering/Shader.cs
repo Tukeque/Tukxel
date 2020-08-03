@@ -10,7 +10,7 @@ namespace Tukxel
     {
         public int Handle;
 
-        public void Use(Matrix4 projection, Matrix4 model, Matrix4 view)
+        public void Use(Matrix4 projection, Matrix4 model, Matrix4 view, Matrix4 camera)
         {
             try
             {
@@ -25,6 +25,9 @@ namespace Tukxel
 
                 location = GL.GetUniformLocation(Handle, "model");
                 GL.UniformMatrix4(location, true, ref model);
+
+                location = GL.GetUniformLocation(Handle, "camera");
+                GL.UniformMatrix4(location, true, ref camera);
 
             }
             catch (Exception e)

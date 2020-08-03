@@ -99,7 +99,7 @@ namespace Tukxel
                 float deltaX = mouse.X - (X + Width  / 2f);
                 float deltaY = mouse.Y - (Y + Height / 2f);
 
-                Camera.Yaw -= deltaX * sensitivity * (float)Game.DeltaTime;
+                Camera.Yaw += deltaX * sensitivity * (float)Game.DeltaTime;
                 if (Camera.Pitch > 89.0f)
                 {
                     Camera.Pitch = 89.0f;
@@ -110,7 +110,7 @@ namespace Tukxel
                 }
                 else
                 {
-                    Camera.Pitch += deltaY * sensitivity * (float)Game.DeltaTime;
+                    Camera.Pitch -= deltaY * sensitivity * (float)Game.DeltaTime;
                 }
 
                 Camera.front.X = (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Pitch)) * (float)Math.Cos(MathHelper.DegreesToRadians(Camera.Yaw));
