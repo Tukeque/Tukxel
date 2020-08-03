@@ -169,7 +169,7 @@ namespace Tukxel
                 coob.UseElementBufferObject = false;
                 coob.ShaderFragmentPath = "Rendering/Shaders/shader.frag";
                 coob.ShaderVertexPath   = "Rendering/Shaders/shader.vert";
-                coob.TexturePath        = "Images/pog.png";
+                coob.TexturePath        = "Rendering/Images/pog.png";
 
                 coob.Setup();
             }

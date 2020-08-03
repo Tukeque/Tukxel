@@ -24,6 +24,9 @@ namespace Tukxel
 
                 Tukxel.keyboard = keyboard;
 
+                Tukxel.X = X;
+                Tukxel.Y = Y;
+
                 Debugger.Update();
                 Tukxel.Update();
 
@@ -113,7 +116,7 @@ namespace Tukxel
         {
             if (Tukxel.CursorLockAndInvisible)
             {
-                Mouse.SetPosition(X + Width / 2f, Y + Height / 2f);
+                
             }
 
             base.OnMouseMove(e);

@@ -21,16 +21,16 @@
     <None Update="Docs\Logo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\HQimage.jpg">
+    <None Update="Rendering\Images\HQimage.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\Monkat.png">
+    <None Update="Rendering\Images\Monkat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\pog.png">
+    <None Update="Rendering\Images\pog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Images\summer.jpg">
+    <None Update="Rendering\Images\summer.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Logo.ico">
